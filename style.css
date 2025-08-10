@@ -1,5 +1,7 @@
 body {
-    background-color: #2c2c2c;
+    background: linear-gradient(135deg, #1f1f1f, #2c2c2c, #1f1f1f);
+    background-size: 400% 400%;
+    animation: gradientAnimation 15s ease infinite;
     color: #fff;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     display: flex;
@@ -7,6 +9,18 @@ body {
     align-items: center;
     min-height: 100vh;
     margin: 0;
+}
+
+@keyframes gradientAnimation {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
 }
 
 .container {
@@ -37,7 +51,7 @@ p {
 }
 
 .highlight {
-    color: #1e90ff; /* A bright blue similar to the image */
+    color: #1e90ff;
 }
 
 .social-links {
@@ -47,7 +61,6 @@ p {
 }
 
 .social-icon {
-    font-size: 2em;
     width: 60px;
     height: 60px;
     border-radius: 50%;
@@ -57,6 +70,8 @@ p {
     align-items: center;
     margin: 0 10px;
     text-decoration: none;
+    color: #fff; /* Цвет иконки */
+    font-size: 1.5em; /* Размер иконки */
 }
 
 .header {
@@ -88,4 +103,4 @@ p {
     margin-top: 20px;
     font-size: 0.8em;
     color: #a0a0a0;
-  }
+}
