@@ -1,0 +1,91 @@
+body {
+    background-color: #2c2c2c;
+    color: #fff;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+}
+
+.container {
+    width: 100%;
+    max-width: 400px;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.card {
+    background-color: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 30px;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    font-size: 2.5em;
+    margin-bottom: 0.5em;
+    font-weight: normal;
+}
+
+p {
+    margin: 0;
+    line-height: 1.2;
+}
+
+.highlight {
+    color: #1e90ff; /* A bright blue similar to the image */
+}
+
+.social-links {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.social-icon {
+    font-size: 2em;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 10px;
+    text-decoration: none;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    font-size: 0.9em;
+    color: #a0a0a0;
+}
+
+.close-btn {
+    font-size: 2em;
+    text-decoration: none;
+    color: #a0a0a0;
+    margin-right: 15px;
+}
+
+.prochacker-info {
+    font-weight: bold;
+}
+
+.app-url {
+    flex-grow: 1;
+    text-align: right;
+}
+
+.footer {
+    text-align: left;
+    margin-top: 20px;
+    font-size: 0.8em;
+    color: #a0a0a0;
+  }
