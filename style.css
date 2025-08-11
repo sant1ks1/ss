@@ -1,42 +1,22 @@
 body {
-    background: radial-gradient(circle, #000000 0%, #001a00 100%);
-    color: #fff;
+    margin: 0;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #fff;
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    margin: 0;
-    position: relative;
-    overflow: hidden; /* Чтобы матрица не выходила за границы */
+    background-color: #000; /* Fallback background */
+    overflow: hidden; /* Hide any potential scrollbars from the canvas */
 }
 
-/* Эффект матричного кода на заднем фоне */
-body::before {
-    content: '';
-    position: absolute;
+#matrixCanvas {
+    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: repeating-linear-gradient(
-        to bottom,
-        rgba(0, 255, 0, 0.05),
-        rgba(0, 255, 0, 0.05) 2px,
-        transparent 2px,
-        transparent 20px
-    );
-    animation: matrix-scroll 20s linear infinite;
-    z-index: -1;
-}
-
-@keyframes matrix-scroll {
-    from {
-        background-position: 0 0;
-    }
-    to {
-        background-position: 0 100%;
-    }
+    z-index: -1; /* Place the canvas behind other content */
 }
 
 .container {
@@ -44,6 +24,7 @@ body::before {
     max-width: 400px;
     padding: 20px;
     box-sizing: border-box;
+    z-index: 1; /* Ensure the card is on top of the matrix effect */
 }
 
 .card {
