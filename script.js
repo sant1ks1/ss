@@ -5,7 +5,7 @@ canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
 const fontSize = 16;
-const columns = canvas.width / fontSize;
+let columns = canvas.width / fontSize;
 const drops = [];
 
 for (let i = 0; i < columns; i++) {
@@ -21,13 +21,13 @@ function drawMatrix() {
 
     for (let i = 0; i < drops.length; i++) {
         const text = Math.random() < 0.5 ? '0' : '1';
-        ctx.fillText(text, i * fontSize, drops [i] * fontSize);
+        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
 
-        if (drops [i] * fontSize > canvas.height && Math.random() > 0.975) {
-            drops [i] = 0;
+        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+            drops[i] = 0;
         }
 
-        drops [i]++;
+        drops[i]++;
     }
 }
 
@@ -46,4 +46,19 @@ window.addEventListener('resize', () => {
     for (let i = 0; i < columns; i++) {
         drops.push(1);
     }
+});
+
+// Счетчик посещений
+document.addEventListener('DOMContentLoaded', () => {
+    const counterElement = document.getElementById('counter-value');
+    let visitorCount = localStorage.getItem('visitorCount');
+
+    if (visitorCount === null) {
+        visitorCount = 1;
+    } else {
+        visitorCount = parseInt(visitorCount) + 1;
+    }
+
+    localStorage.setItem('visitorCount', visitorCount);
+    counterElement.textContent = visitorCount;
 });
