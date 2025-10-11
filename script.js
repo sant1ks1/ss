@@ -33,62 +33,125 @@ function createParticles() {
     }
 }
 
-// Класс для управления аудио
-class AudioManager {
+// Класс для музыкального плеера
+class MusicPlayer {
     constructor() {
-        this.audio = document.getElementById('backgroundMusic');
+        this.audio = new Audio('1.mp3');
         this.isPlaying = false;
-        this.isMuted = false;
-        this.soundIcon = document.getElementById('soundIcon');
-        this.soundControl = document.getElementById('soundControl');
+        this.currentTrack = 0;
+        this.tracks = [
+            { name: "Poster Boy - 2holli", artist: "GoodHackOrg Sound", duration: 223 }
+        ];
         this.init();
     }
 
     init() {
+        this.setupElements();
         this.setupEventListeners();
-        // Не пытаемся воспроизвести автоматически, ждем клика пользователя
-        this.updateSoundIcon();
+        this.loadTrack(this.currentTrack);
+    }
+
+    setupElements() {
+        this.playPauseBtn = document.getElementById('playPauseBtn');
+        this.prevBtn = document.getElementById('prevBtn');
+        this.nextBtn = document.getElementById('nextBtn');
+        this.progress = document.getElementById('progress');
+        this.currentTimeEl = document.getElementById('current-time');
+        this.durationEl = document.getElementById('duration');
+        this.volumeSlider = document.getElementById('volumeSlider');
+        this.albumArt = document.querySelector('.album-art');
+        this.trackName = document.querySelector('.track-name');
+        this.artistName = document.querySelector('.artist-name');
+        
+        // Установка начального значения громкости
+        this.audio.volume = 0.7;
+        this.volumeSlider.value = 70;
     }
 
     setupEventListeners() {
-        this.soundControl.addEventListener('click', () => {
-            this.toggleSound();
+        this.playPauseBtn.addEventListener('click', () => this.togglePlay());
+        this.prevBtn.addEventListener('click', () => this.prevTrack());
+        this.nextBtn.addEventListener('click', () => this.nextTrack());
+        this.audio.addEventListener('timeupdate', () => this.updateProgress());
+        this.audio.addEventListener('loadedmetadata', () => this.updateDuration());
+        this.audio.addEventListener('ended', () => this.nextTrack());
+        
+        this.progress.parentElement.addEventListener('click', (e) => {
+            const rect = this.progress.parentElement.getBoundingClientRect();
+            const percent = (e.clientX - rect.left) / rect.width;
+            this.audio.currentTime = percent * this.audio.duration;
         });
-
-        // Обработка ошибок воспроизведения
-        this.audio.addEventListener('error', () => {
-            console.log('Audio playback failed');
-            this.soundIcon.className = 'fas fa-volume-mute';
-            this.isMuted = true;
+        
+        this.volumeSlider.addEventListener('input', (e) => {
+            this.audio.volume = e.target.value / 100;
         });
     }
 
-    async toggleSound() {
-        if (!this.isPlaying) {
-            try {
-                await this.audio.play();
-                this.isPlaying = true;
-                this.isMuted = false;
-            } catch (error) {
-                console.log('Playback failed:', error);
-                this.isPlaying = false;
-                this.isMuted = true;
-            }
-        } else {
-            this.isMuted = !this.isMuted;
-            this.audio.muted = this.isMuted;
-        }
-        this.updateSoundIcon();
+    loadTrack(index) {
+        const track = this.tracks[index];
+        this.currentTrack = index;
+        
+        // Обновляем информацию о треке
+        this.trackName.textContent = track.name;
+        this.artistName.textContent = track.artist;
+        this.durationEl.textContent = this.formatTime(track.duration);
     }
 
-    updateSoundIcon() {
-        if (!this.isPlaying) {
-            this.soundIcon.className = 'fas fa-volume-off';
-        } else if (this.isMuted) {
-            this.soundIcon.className = 'fas fa-volume-mute';
+    togglePlay() {
+        if (this.isPlaying) {
+            this.pause();
         } else {
-            this.soundIcon.className = 'fas fa-volume-up';
+            this.play();
         }
+    }
+
+    play() {
+        this.audio.play().catch(e => {
+            console.log('Playback failed:', e);
+        });
+        this.isPlaying = true;
+        this.playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
+    }
+
+    pause() {
+        this.audio.pause();
+        this.isPlaying = false;
+        this.playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
+    }
+
+    prevTrack() {
+        this.currentTrack = (this.currentTrack - 1 + this.tracks.length) % this.tracks.length;
+        this.loadTrack(this.currentTrack);
+        if (this.isPlaying) {
+            this.play();
+        }
+    }
+
+    nextTrack() {
+        this.currentTrack = (this.currentTrack + 1) % this.tracks.length;
+        this.loadTrack(this.currentTrack);
+        if (this.isPlaying) {
+            this.play();
+        }
+    }
+
+    updateProgress() {
+        const currentTime = this.audio.currentTime;
+        const duration = this.audio.duration || 1;
+        const percent = (currentTime / duration) * 100;
+        
+        this.progress.style.width = `${percent}%`;
+        this.currentTimeEl.textContent = this.formatTime(currentTime);
+    }
+
+    updateDuration() {
+        this.durationEl.textContent = this.formatTime(this.audio.duration);
+    }
+
+    formatTime(seconds) {
+        const mins = Math.floor(seconds / 60);
+        const secs = Math.floor(seconds % 60);
+        return `${mins}:${secs.toString().padStart(2, '0')}`;
     }
 }
 
@@ -100,7 +163,7 @@ class Portfolio {
 
     init() {
         createParticles();
-        new AudioManager();
+        new MusicPlayer();
         this.addScrollAnimations();
         this.addButtonHoverEffects();
         this.addPageLoadAnimation();
@@ -124,40 +187,37 @@ class Portfolio {
 
         // Наблюдаем за всеми основными элементами
         const elementsToAnimate = [
-            document.querySelector('.avatar'),
-            document.querySelector('h1'),
-            document.querySelector('.tagline'),
-            document.querySelector('.bio'),
-            ...document.querySelectorAll('.link-btn')
+            document.querySelector('.header-title'),
+            document.querySelector('.music-player'),
+            document.querySelector('.about-section'),
+            document.querySelector('.system-info')
         ];
 
         elementsToAnimate.forEach((el, index) => {
             if (el) {
-                el.classList.add(`delay-${index}`);
-                observer.observe(el);
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(30px)';
+                el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                
+                setTimeout(() => {
+                    el.style.opacity = '1';
+                    el.style.transform = 'translateY(0)';
+                }, index * 100);
             }
         });
     }
 
     // Эффекты при наведении на кнопки
     addButtonHoverEffects() {
-        const buttons = document.querySelectorAll('.link-btn');
+        const buttons = document.querySelectorAll('.control-btn, .link-item');
         
         buttons.forEach(button => {
             button.addEventListener('mouseenter', () => {
-                // Добавляем вибрацию при наведении на кнопку поддержки
-                if (button.classList.contains('donate')) {
-                    button.style.animation = 'none';
-                    setTimeout(() => {
-                        button.style.animation = 'pulse 2s infinite';
-                    }, 10);
-                }
+                button.style.transform = 'scale(1.05)';
             });
 
             button.addEventListener('mouseleave', () => {
-                if (button.classList.contains('donate')) {
-                    button.style.animation = 'none';
-                }
+                button.style.transform = 'scale(1)';
             });
         });
     }
