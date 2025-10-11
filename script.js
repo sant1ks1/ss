@@ -1,40 +1,159 @@
-// script.js
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('DOM loaded');
-    
-    // Курсор-спотлайт
-    document.addEventListener('mousemove', (e) => {
-        const spotlight = document.getElementById('cursor-spotlight');
-        if (spotlight) {
-            spotlight.style.transform = `translate(${e.clientX - 400}px, ${e.clientY - 400}px)`;
-        }
-    });
+// Класс для управления анимациями и интерактивностью
+class Portfolio {
+    constructor() {
+        this.init();
+    }
 
-    // Плавный скролл и анимации
-    window.addEventListener('scroll', () => {
-        const hero = document.querySelector('.hero');
-        const mainContent = document.getElementById('main-content');
-        const scrollPosition = window.scrollY;
-        const windowHeight = window.innerHeight;
+    init() {
+        this.addScrollAnimations();
+        this.addButtonHoverEffects();
+        this.addCopyToClipboard();
+        this.addPageLoadAnimation();
+    }
 
-        console.log('Scroll position:', scrollPosition, 'Window height:', windowHeight);
+    // Анимации при прокрутке
+    addScrollAnimations() {
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
 
-        if (hero) {
-            // Исчезновение героя
-            if (scrollPosition > windowHeight * 0.3) {
-                hero.classList.add('fade-out');
-                console.log('Hero fade out');
-            } else {
-                hero.classList.remove('fade-out');
-                console.log('Hero fade in');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-fade-in-up');
+                }
+            });
+        }, observerOptions);
+
+        // Наблюдаем за всеми основными элементами
+        const elementsToAnimate = [
+            document.querySelector('.avatar'),
+            document.querySelector('h1'),
+            document.querySelector('.tagline'),
+            document.querySelector('.bio'),
+            ...document.querySelectorAll('.link-btn')
+        ];
+
+        elementsToAnimate.forEach((el, index) => {
+            if (el) {
+                el.classList.add(`delay-${index}`);
+                observer.observe(el);
             }
-        }
+        });
+    }
 
-        if (mainContent) {
-            // Появление основного контента
-            if (scrollPosition > windowHeight * 0.5) {
-                mainContent.classList.add('visible');
-                console.log('Main content visible');
+    // Эффекты при наведении на кнопки
+    addButtonHoverEffects() {
+        const buttons = document.querySelectorAll('.link-btn');
+        
+        buttons.forEach(button => {
+            button.addEventListener('mouseenter', () => {
+                // Добавляем вибрацию при наведении на кнопку поддержки
+                if (button.classList.contains('donate')) {
+                    button.style.animation = 'none';
+                    setTimeout(() => {
+                        button.style.animation = 'pulse 2s infinite';
+                    }, 10);
+                }
+            });
+
+            button.addEventListener('mouseleave', () => {
+                if (button.classList.contains('donate')) {
+                    button.style.animation = 'none';
+                }
+            });
+        });
+    }
+
+    // Копирование ссылок в буфер обмена (альтернативный способ)
+    addCopyToClipboard() {
+        // Добавляем возможность копирования ссылок по клику с зажатой клавишей Ctrl
+        document.addEventListener('keydown', (e) => {
+            if (e.ctrlKey || e.metaKey) {
+                const links = document.querySelectorAll('.link-btn');
+                links.forEach(link => {
+                    link.style.border = '2px dashed #a855f7';
+                });
+            }
+        });
+
+        document.addEventListener('keyup', () => {
+            const links = document.querySelectorAll('.link-btn');
+            links.forEach(link => {
+                link.style.border = 'none';
+            });
+        });
+    }
+
+    // Анимация загрузки страницы
+    addPageLoadAnimation() {
+        // Плавное появление всего контента
+        document.body.style.opacity = '0';
+        document.body.style.transition = 'opacity 0.6s ease';
+        
+        setTimeout(() => {
+            document.body.style.opacity = '1';
+        }, 100);
+    }
+
+    // Метод для показа уведомлений (можно использовать в будущем)
+    showNotification(message, type = 'info') {
+        // Создаем временное уведомление
+        const notification = document.createElement('div');
+        notification.textContent = message;
+        notification.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 12px 20px;
+            background: ${type === 'success' ? '#10b981' : '#3b82f6'};
+            color: white;
+            border-radius: 8px;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+        `;
+        
+        document.body.appendChild(notification);
+        
+        setTimeout(() => {
+            notification.style.transform = 'translateX(0)';
+        }, 100);
+        
+        setTimeout(() => {
+            notification.style.transform = 'translateX(100%)';
+            setTimeout(() => {
+                document.body.removeChild(notification);
+            }, 300);
+        }, 3000);
+    }
+}
+
+// Инициализация портфолио при загрузке страницы
+document.addEventListener('DOMContentLoaded', () => {
+    new Portfolio();
+    
+    // Добавляем пульсацию для кнопки доната
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(255, 107, 107, 0.4); }
+            70% { box-shadow: 0 0 0 12px rgba(255, 107, 107, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 107, 107, 0); }
+        }
+    `;
+    document.head.appendChild(style);
+});
+
+// Защита от выделения текста на мобильных устройствах (опционально)
+document.addEventListener('touchstart', function(e) {
+    if (e.touches.length > 1) {
+        e.preventDefault();
+    }
+});                console.log('Main content visible');
             } else {
                 mainContent.classList.remove('visible');
                 console.log('Main content hidden');
