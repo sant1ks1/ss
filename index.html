@@ -4,37 +4,44 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GoodHackOrg | Python Developer</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Roboto+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div id="cursor-spotlight"></div>
-    <div id="particles-container"></div>
+    <div class="container">
+        <div class="profile-card">
+            <div class="avatar">
+                <i class="fas fa-code"></i>
+            </div>
+            <h1>GoodHackOrg</h1>
+            <div class="tagline">Python Developer</div>
+            
+            <div class="bio">
+                <p>Привет! Я <strong>GoodHackOrg</strong> — passionate Python разработчик, специализирующийся на создании эффективных и элегантных решений.</p>
+                <p>Увлекаюсь разработкой программного обеспечения, автоматизацией процессов и созданием инструментов, которые делают жизнь проще и продуктивнее.</p>
+                <p>Всегда открыт к интересным проектам и сотрудничеству!</p>
+            </div>
 
-    <section class="hero">
-        <div class="hero-content">
-            <h1 class="glitch-title" data-text="GoodHackOrg">GoodHackOrg</h1>
-            <div class="scroll-down-indicator">
-                <span></span>
+            <div class="links">
+                <a href="https://t.me/GoodHackOrg" target="_blank" class="link-btn telegram" id="telegramBtn">
+                    <i class="fab fa-telegram"></i>
+                    <span>Написать в Telegram</span>
+                </a>
+                <a href="https://yoomoney.ru/to/4100119033705970" target="_blank" class="link-btn donate" id="donateBtn">
+                    <i class="fas fa-heart"></i>
+                    <span>Поддержать проект</span>
+                </a>
             </div>
         </div>
-    </section>
 
-    <main id="main-content">
-        <div class="content-wrapper">
-            <div class="left-panel">
-                <div class="card player-card">
-                    <h2 class="panel-title">Сейчас играет</h2>
-                    <div class="player-body">
-                        <div class="album-art">
-                            <img src="https://i.scdn.co/image/ab67616d00001e02a1e1c6e8f8c0e8d8b0e3e3a2" alt="2hollis - BOY">
-                        </div>
-                        <div class="track-info">
-                            <div class="song-title">BOY</div>
-                            <div class="song-artist">2hollis</div>
-                            <div class="progress-container">
-                                <div class="progress-bar" style="width: 45%"></div>
-                            </div>
+        <footer>
+            <p>© 2024 GoodHackOrg | Minimalist Developer Portfolio</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>                            </div>
                             <div class="buttons">
                                 <button class="control-btn" id="prev-btn">
                                     <svg viewBox="0 0 24 24">
