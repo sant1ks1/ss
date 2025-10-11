@@ -11,7 +11,7 @@
     <!-- Анимированный фон -->
     <div class="particles" id="particles"></div>
 
-    <!-- Заголовок с эффектом -->
+    <!-- Заголовок -->
     <div class="header-title">
         <h1>GoodHackOrg</h1>
     </div>
@@ -36,13 +36,13 @@
                                 <div class="progress" id="progress"></div>
                             </div>
                             <div class="time-display">
-                                <span id="current-time">0:00</span> / <span id="duration">3:43</span>
+                                <span id="current-time">0:00</span> / <span id="duration">0:00</span>
                             </div>
                         </div>
                         <div class="controls">
-                            <button class="control-btn" id="prevBtn"><i class="fas fa-step-backward"></i></button>
-                            <button class="control-btn play-pause" id="playPauseBtn"><i class="fas fa-play"></i></button>
-                            <button class="control-btn" id="nextBtn"><i class="fas fa-step-forward"></i></button>
+                            <button class="control-btn play-pause" id="playPauseBtn">
+                                <i class="fas fa-play"></i>
+                            </button>
                             <div class="volume-control">
                                 <i class="fas fa-volume-up volume-icon"></i>
                                 <input type="range" min="0" max="100" value="70" class="volume-slider" id="volumeSlider">
@@ -81,7 +81,6 @@
             <div class="center-column">
                 <div class="about-section">
                     <h2>Обо мне</h2>
-                    
                     <div class="section-content">
                         <h3>Кто я</h3>
                         <p>Меня зовут GoodHackOrg, я — разработчик программного обеспечения из Челябинска. Моя страсть — создание логичных и надежных программных продуктов.</p>
@@ -136,7 +135,6 @@
         </div>
     </div>
 
-    <audio id="backgroundMusic" src="1.mp3" loop preload="auto"></audio>
     <script src="script.js"></script>
 </body>
 </html>
