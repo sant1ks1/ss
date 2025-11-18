@@ -36,8 +36,8 @@ portfolio/
 📥 Клонирование репозитория
 
 ```bash
-git clone https://github.com/deco9er/portfolio.git
-cd portfolio
+git clone https://github.com/deco9er/ss.git
+cd ss
 ```
 
 🌐 Запуск локального сервера
